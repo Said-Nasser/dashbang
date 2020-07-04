@@ -1,0 +1,21 @@
+{
+    "name": "dashbang",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Said-Nasser/dashbang.git"
+    },
+    "scripts": {
+        "start": "gulp"
+    },
+    "author": "Said Nasser",
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-jshint": "^2.1.0",
+        "gulp-sass": "^4.0.2",
+        "gulp-sourcemaps": "^2.6.5",
+        "node-sass": "^4.14.1"
+    },
+    "dependencies": {
+        "browser-sync": "^2.26.5"
+    }
+}
