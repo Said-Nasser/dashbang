@@ -1,239 +1,182 @@
 // dropdown toggle
-document.querySelector('header.top-header button.dropdown-toggle').addEventListener('click', function (e) {
-    document.querySelector('header.top-header .dropdown-menu').classList.toggle('show')
-})
+document
+    .querySelector(".top-header button.dropdown-toggle")
+    .addEventListener("click", function (e) {
+        document
+            .querySelector(".top-header .dropdown-menu")
+            .classList.toggle("show");
+    });
 
-// set width and height of charts
-document.querySelectorAll('.widget .chart').forEach((chart) => {
-    chart.style.width = '100%'
-    chart.style.height = '140px'
-})
+// Apply chart themes
+am4core.useTheme(am4themes_animated);
+am4core.useTheme(am4themes_kelly);
+// define chart
+let chart = {}
+function drawChart1(id) {
 
-// define charts
-let chart1 = echarts.init(document.querySelector('#chart1'))
-let chart2 = echarts.init(document.querySelector('#chart2'))
-let chart3 = echarts.init(document.querySelector('#chart3'))
+    chart = am4core.create(id, am4charts.XYChart3D)
+    chart.data = [{
+        "country": "Lithuania",
+        "litres": 501.9,
+        "units": 250
+    }, {
+        "country": "Czech Republic",
+        "litres": 301.9,
+        "units": 222
+    }, {
+        "country": "Ireland",
+        "litres": 201.1,
+        "units": 170
+    }, {
+        "country": "Germany",
+        "litres": 165.8,
+        "units": 122
+    }, {
+        "country": "Australia",
+        "litres": 139.9,
+        "units": 99
+    }, {
+        "country": "Austria",
+        "litres": 128.3,
+        "units": 85
+    }, {
+        "country": "UK",
+        "litres": 99,
+        "units": 93
+    }, {
+        "country": "Belgium",
+        "litres": 60,
+        "units": 50
+    }, {
+        "country": "The Netherlands",
+        "litres": 50,
+        "units": 42
+    }];
+    // Create axes
+    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "country";
+    categoryAxis.title.text = "Countries";
 
-function drawChart1() {
-    let dataCount = 5e5;
-    let data = generateData(dataCount);
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = "Litres sold (M)";
 
-    let option = {
-        title: {
-            text: echarts.format.addCommas(dataCount) + ' Data',
-            left: 10
-        },
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: false
-                },
-                saveAsImage: {
-                    pixelRatio: 2
-                }
-            }
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
-        },
-        grid: {
-            bottom: 90
-        },
-        xAxis: {
-            data: data.categoryData,
-            silent: false,
-            splitLine: {
-                show: false
-            },
-            splitArea: {
-                show: false
-            }
-        },
-        yAxis: {
-            splitArea: {
-                show: false
-            }
-        },
-        series: [{
-            type: 'bar',
-            data: data.valueData,
-            // Set `large` for large data amount
-            large: true
-        }]
-    };
+    // Create series
+    let series = chart.series.push(new am4charts.ColumnSeries3D());
+    series.dataFields.valueY = "litres";
+    series.dataFields.categoryX = "country";
+    series.name = "Sales";
+    series.tooltipText = "{name}: [bold]{valueY}[/]";
 
-    function generateData(count) {
-        var baseValue = Math.random() * 1000;
-        var time = +new Date(2011, 0, 1);
-        var smallBaseValue;
+    let series2 = chart.series.push(new am4charts.ColumnSeries3D());
+    series2.dataFields.valueY = "units";
+    series2.dataFields.categoryX = "country";
+    series2.name = "Units";
+    series2.tooltipText = "{name}: [bold]{valueY}[/]";
 
-        function next(idx) {
-            smallBaseValue = idx % 30 === 0
-                ? Math.random() * 700
-                : (smallBaseValue + Math.random() * 500 - 250);
-            baseValue += Math.random() * 20 - 10;
-            return Math.max(
-                0,
-                Math.round(baseValue + smallBaseValue) + 3000
-            );
-        }
+    // Add cursor
+    chart.cursor = new am4charts.XYCursor();
+};
 
-        var categoryData = [];
-        var valueData = [];
+function drawChart2(id) {
+    chart = am4core.create(id, am4charts.XYChart);
+    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-        for (var i = 0; i < count; i++) {
-            categoryData.push(echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss', time));
-            valueData.push(next(i).toFixed(2));
-            time += 1000;
-        }
+    chart.paddingRight = 20;
 
-        return {
-            categoryData: categoryData,
-            valueData: valueData
-        };
+    let data = [];
+    let open = 100;
+    let close = 250;
+
+    for (let i = 1; i < 120; i++) {
+        open += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 4);
+        close = Math.round(open + Math.random() * 5 + i / 5 - (Math.random() < 0.5 ? 1 : -1) * Math.random() * 2);
+        data.push({ date: new Date(2018, 0, i), open: open, close: close });
     }
 
-    chart1.setOption(option)
+    chart.data = data;
 
+    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.tooltip.disabled = true;
+
+    let series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.dateX = "date";
+    series.dataFields.openValueY = "open";
+    series.dataFields.valueY = "close";
+    series.tooltipText = "open: {openValueY.value} close: {valueY.value}";
+    series.sequencedInterpolation = true;
+    series.fillOpacity = 0.3;
+    series.defaultState.transitionDuration = 1000;
+    series.tensionX = 0.8;
+
+    let series2 = chart.series.push(new am4charts.LineSeries());
+    series2.dataFields.dateX = "date";
+    series2.dataFields.valueY = "open";
+    series2.sequencedInterpolation = true;
+    series2.defaultState.transitionDuration = 1500;
+    series2.stroke = chart.colors.getIndex(6);
+    series2.tensionX = 0.8;
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.xAxis = dateAxis;
+    chart.scrollbarX = new am4core.Scrollbar();
 }
 
-function drawChart2() {
-    let xAxisData = [];
-    let data1 = [];
-    let data2 = [];
-    for (var i = 0; i < 100; i++) {
-        xAxisData.push('类目' + i);
-        data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-        data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-    }
-    option = {
-        title: {
-            text: 'Distribution'
+function drawChart3(id) {
+    chart = am4core.create(id, am4charts.PieChart3D);
+    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+    chart.data = [
+        {
+            country: "Lithuania",
+            litres: 501.9
         },
-        legend: {
-            data: ['bar', 'bar2']
+        {
+            country: "Czech Republic",
+            litres: 301.9
         },
-        toolbox: {
-            feature: {
-                magicType: {
-                    type: ['stack', 'tiled']
-                },
-                dataView: {},
-                saveAsImage: {
-                    pixelRatio: 2
-                }
-            }
+        {
+            country: "Ireland",
+            litres: 201.1
         },
-        tooltip: {},
-        xAxis: {
-            data: xAxisData,
-            splitLine: {
-                show: false
-            }
+        {
+            country: "Germany",
+            litres: 165.8
         },
-        yAxis: {
+        {
+            country: "Australia",
+            litres: 139.9
         },
-        series: [{
-            name: 'bar',
-            type: 'bar',
-            data: data1,
-            animationDelay: function (idx) {
-                return idx * 10;
-            }
-        }, {
-            name: 'bar2',
-            type: 'bar',
-            data: data2,
-            animationDelay: function (idx) {
-                return idx * 10 + 100;
-            }
-        }],
-        animationEasing: 'elasticOut',
-        animationDelayUpdate: function (idx) {
-            return idx * 5;
+        {
+            country: "Austria",
+            litres: 128.3
         }
-    };
-    chart2.setOption(option)
+    ];
+
+    chart.innerRadius = am4core.percent(40);
+    chart.depth = 120;
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.position = "right";
+
+    let series = chart.series.push(new am4charts.PieSeries3D());
+    series.dataFields.value = "litres";
+    series.dataFields.depthValue = "litres";
+    series.dataFields.category = "country";
+    series.slices.template.cornerRadius = 5;
+    series.colors.step = 3;
+
 }
 
-function drawChart3() {
-
-    option = {
-        backgroundColor: '#2c343c',
-
-        title: {
-            text: 'Customized Pie',
-            left: 'center',
-            top: 20,
-            textStyle: {
-                color: '#ccc'
-            }
-        },
-
-        tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-
-        visualMap: {
-            show: false,
-            min: 80,
-            max: 600,
-            inRange: {
-                colorLightness: [0, 1]
-            }
-        },
-        series: [
-            {
-                name: 'Pie',
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '50%'],
-                data: [
-                    { value: 335, name: 'X' },
-                    { value: 310, name: 'Y' },
-                    { value: 274, name: 'Z' },
-                    { value: 235, name: 'W' },
-                    { value: 400, name: 'V' }
-                ].sort(function (a, b) { return a.value - b.value; }),
-                roseType: 'radius',
-                label: {
-                    color: 'rgba(255, 255, 255, 0.3)'
-                },
-                labelLine: {
-                    lineStyle: {
-                        color: 'rgba(255, 255, 255, 0.3)'
-                    },
-                    smooth: 0.2,
-                    length: 10,
-                    length2: 20
-                },
-                itemStyle: {
-                    color: '#c23531',
-                    shadowBlur: 200,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                },
-
-                animationType: 'scale',
-                animationEasing: 'elasticOut',
-                animationDelay: function (idx) {
-                    return Math.random() * 200;
-                }
-            }
-        ]
-    };
-    chart3.setOption(option)
-}
+document.querySelector('#chart1').drawFn = drawChart1
+document.querySelector('#chart2').drawFn = drawChart2
+document.querySelector('#chart3').drawFn = drawChart3
 
 
-drawChart1()
-drawChart2()
-drawChart3()
-
-
+drawChart1('chart1');
+drawChart2('chart2');
+drawChart3('chart3');
 
 // drag and drop
 function allowDrop(ev) {
@@ -247,85 +190,131 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     let id = ev.dataTransfer.getData("text");
-    ev.target.innerHTML = ''
-    if (ev.target.classList.contains('widget')) {
-        document.getElementById(id).style.width = `${document.querySelector('.left').getBoundingClientRect().width - 32}px`
-        document.getElementById(id).style.height = '140px'
-
+    ev.target.innerHTML = "";
+    if (ev.target.classList.contains("widget")) {
+        document.getElementById(id).style.width = `${
+            document.querySelector(".left").getBoundingClientRect().width - 32
+            }px`;
+        document.getElementById(id).style.height = "140px";
     }
-    if (ev.target.classList.contains('slot-content')) {
-        document.getElementById(id).style.width = `${ev.target.getBoundingClientRect().width - 2}px`
-        document.getElementById(id).style.height = `${ev.target.getBoundingClientRect().height}px`
+    if (document.querySelector('#runningChart') !== null && document.querySelector('#runningChart') !== 'undefined') {
+        chart.dispose()
+        chart = {}
+    } else {
+        let runningChart = document.createElement('div')
+        runningChart.id = 'runningChart'
+        document.querySelector('#slot-content').innerHTML = ''
+        document.querySelector('#slot-content').appendChild(runningChart)
+        runningChart.style.left = `${ev.target.getBoundingClientRect().width - 2}px`;
+        runningChart.style.height = `${ev.target.getBoundingClientRect().height}px`;
     }
-
-    ev.target.appendChild(document.getElementById(id));
-
-    resize(id)
-
-    document.querySelectorAll('.slot-content').forEach((slot) => {
-        if (slot.innerHTML === '') {
-            slot.innerHTML = '<i class="fas fa-plus-circle" style="color: #ebebeb; font-size: 20px;"></i>'
-        }
-    })
+    document.getElementById(id).drawFn('runningChart')
 }
-
-
 
 // resize charts
 function resize(id) {
     [
         {
-            id: 'chart1',
-            chart: chart1
+            id: "chart1",
+            chart: chart1,
         },
         {
-            id: 'chart2',
-            chart: chart2
+            id: "chart2",
+            chart: chart2,
         },
         {
-            id: 'chart3',
-            chart: chart3
-        }
+            id: "chart3",
+            chart: chart3,
+        },
     ].map((item) => {
         if (item.id === id) {
-            item.chart.resize()
+            item.chart.resize();
         }
-    })
-
+    });
 }
 
 // resize slots
 // ResizeObserver is used to detect the resize event on HTML elements, like onresize event for the window
-const resizeObserver = new ResizeObserver(entries => {
+const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-        if (entry.target.querySelector('.chart') !== null && entry.target.querySelector('.chart') !== 'undefined') {
-            entry.target.querySelector('.chart').style.width = `${entry.contentRect.width}px`
-            entry.target.querySelector('.chart').style.height = `${entry.contentRect.height}px`
-            resize(entry.target.querySelector('.chart').id)
+        document.querySelector('#resize').style.left = `${(entry.contentRect.width / 2) - 10}px`
+
+        if (document.querySelector('#runningChart') !== null && document.querySelector('#runningChart') !== 'undefined') {
+            document.querySelector('#runningChart').style.width = `${entry.contentRect.width - 2}px`;
+            document.querySelector('#runningChart').style.height = `${entry.contentRect.height}px`;
+        }
+        if (
+            entry.target.querySelector(".chart") !== null &&
+            entry.target.querySelector(".chart") !== "undefined"
+        ) {
+            entry.target.querySelector(
+                ".chart"
+            ).style.width = `${entry.contentRect.width}px`;
+            entry.target.querySelector(
+                ".chart"
+            ).style.height = `${entry.contentRect.height}px`;
         }
     }
 });
 
-
-
-
 // handle drag events
-document.querySelectorAll('.widget .chart').forEach((chart) => {
-    chart.addEventListener('dragstart', drag)
-})
-document.querySelectorAll('.slots .slot-content').forEach((slot) => {
-    slot.addEventListener('dragover', allowDrop)
-    slot.addEventListener('drop', drop)
+document.querySelectorAll(".widget .chart").forEach((chart) => {
+    chart.addEventListener("dragstart", drag);
+});
+document.querySelectorAll(".slots .slot-content").forEach((slot) => {
+    slot.addEventListener("dragover", allowDrop);
+    slot.addEventListener("drop", drop);
     resizeObserver.observe(slot);
+});
 
-})
-document.querySelectorAll('.widget').forEach((widget) => {
-    widget.addEventListener('dragover', allowDrop)
-    widget.addEventListener('drop', drop)
+/* -------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------- */
+//Make the DIV element draggagle:
+dragElement(document.getElementById("resize"));
 
-})
+function dragElement(elmnt) {
+    let pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
+    if (document.getElementById('resize')) {
+        /* if present, the header is where you move the DIV from:*/
+        document.getElementById('resize').onmousedown = dragMouseDown;
+    } else {
+        /* otherwise, move the DIV from anywhere inside the DIV:*/
+        elmnt.onmousedown = dragMouseDown;
+    }
 
+    function dragMouseDown(e) {
+        e = e || window.event;
+        console.log('EVENT: ', e)
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
 
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.parentElement.style.top = elmnt.parentElement.offsetTop - pos2 + "px";
+        elmnt.parentElement.style.left = elmnt.parentElement.offsetLeft - pos1 + "px";
+    }
 
-
-
+    function closeDragElement() {
+        /* stop moving when mouse button is released:*/
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}

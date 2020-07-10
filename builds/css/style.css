@@ -1,108 +1,177 @@
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box; }
 
 body {
   overflow-x: hidden;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  overflow-y: auto;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://www.newsbtc.com/wp-content/uploads/2018/08/techanalysis-eth4.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; }
 
-/*--------------------------------------------header ------------------------------------------*/
-header.top-header {
-  color: #fff;
-  background: #000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 30px; }
-  header.top-header a {
-    color: #fff;
-    text-decoration: none; }
-  header.top-header button {
-    display: flex;
-    align-items: center;
-    border: none;
-    background: transparent;
-    color: #fff; }
-    header.top-header button img {
-      border-radius: 50%;
-      margin-right: 5px; }
-    header.top-header button span {
-      margin-right: 10px; }
-  header.top-header .dropdown {
-    position: relative; }
-    header.top-header .dropdown .dropdown-menu {
-      position: absolute;
-      top: 130%;
-      left: 0;
-      display: none;
-      z-index: 10;
-      border-radius: 5px;
-      box-shadow: 0 0 10px -5px #000;
-      padding: 5px;
-      width: 100%; }
-      header.top-header .dropdown .dropdown-menu a {
-        color: #000;
-        display: block; }
-      header.top-header .dropdown .dropdown-menu.show {
-        display: block; }
+/* width */
+::-webkit-scrollbar {
+  width: 10px; }
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px; }
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #00171f;
+  border-radius: 10px;
+  transition: background-color 0.4s; }
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #007ea7; }
 
 /*------------------------------------- main content ------------------------------------------*/
-main.main-content > header {
-  border-bottom: 1px solid #ddd9d9;
-  padding: 0 30px; }
-  main.main-content > header h2 {
+main.main-content {
+  height: 100%; }
+  main.main-content .top-header {
+    color: #fff;
+    background: rgba(64, 188, 216, 0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px; }
+    main.main-content .top-header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold; }
+    main.main-content .top-header button {
+      display: flex;
+      align-items: center;
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer; }
+      main.main-content .top-header button img {
+        border-radius: 50%;
+        margin-right: 5px;
+        border: 2px solid #fff; }
+      main.main-content .top-header button span {
+        margin-right: 10px; }
+    main.main-content .top-header .dropdown {
+      position: relative; }
+      main.main-content .top-header .dropdown .dropdown-menu {
+        position: absolute;
+        top: 130%;
+        left: 0;
+        display: none;
+        z-index: 10;
+        border-radius: 5px;
+        box-shadow: 0 0 10px -5px #000;
+        padding: 5px;
+        width: 100%; }
+        main.main-content .top-header .dropdown .dropdown-menu a {
+          color: #000;
+          display: block; }
+        main.main-content .top-header .dropdown .dropdown-menu.show {
+          display: block; }
+  main.main-content h2 {
     display: flex;
     align-items: center;
-    color: #6f6f6f; }
-  main.main-content > header i {
-    margin-left: 10px; }
-
-main.main-content .container {
-  display: flex; }
-
-main.main-content .left {
-  flex: 0 0 20%;
-  background: #fff;
-  min-height: 590px;
-  display: flex;
-  flex-direction: column;
-  padding: 15px; }
-  main.main-content .left button {
-    padding: 10px;
-    background: #fff;
-    font-size: 18px;
-    border: 1px solid #cac4c4; }
-  main.main-content .left .widget {
-    border: 1px dashed #cac4c4;
-    width: 100%;
-    min-height: 140px;
-    margin: 15px 0 0; }
-  main.main-content .left .chart {
-    cursor: grab; }
-
-main.main-content .right {
-  flex: 0 0 80%;
-  background: #ebebeb;
-  padding: 0 20px;
-  min-height: 590px; }
-  main.main-content .right .slots {
+    color: #6f6f6f;
+    margin: 0;
+    padding: 1rem; }
+    main.main-content h2 i {
+      margin-left: 10px; }
+  main.main-content > .container {
     display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start; }
-    main.main-content .right .slots .slot {
-      flex: 0 0 50%;
-      min-height: 200px;
-      padding: 10px; }
-    main.main-content .right .slots .slot-content {
+    height: 100%; }
+  main.main-content .left {
+    flex: 0 0 20%;
+    background: rgba(64, 188, 216, 0.5);
+    border-top: 1px solid #40bcd8;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    position: relative;
+    z-index: 20; }
+    main.main-content .left button {
+      padding: 10px;
       background: #fff;
+      font-size: 18px;
+      border: 1px solid #cac4c4;
+      cursor: pointer;
+      background: #8bcee4;
+      border: none;
+      border-radius: 7px;
+      -webkit-box-shadow: 5px 8px 10px -7px #8bcee4;
+      -moz-box-shadow: 5px 8px 10px -7px #8bcee4;
+      box-shadow: 5px 8px 10px -7px #8bcee4; }
+    main.main-content .left .widget {
       border: 1px dashed #cac4c4;
-      height: 100%;
-      min-height: 200px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      resize: both;
-      overflow: auto; }
+      width: 100%;
+      min-height: 140px;
+      margin: 15px 0 0;
+      border-radius: 7px; }
+    main.main-content .left .chart {
+      cursor: grab;
+      background: rgba(241, 245, 248, 0.4); }
+  main.main-content .right {
+    flex: 0 0 80%;
+    min-height: 590px;
+    position: relative;
+    overflow-x: hidden;
+    z-index: 10; }
+    main.main-content .right .slots {
+      padding: 0 20px; }
+      main.main-content .right .slots .slot {
+        position: absolute;
+        z-index: 3;
+        width: 90%;
+        height: 400px;
+        padding: 10px; }
+        main.main-content .right .slots .slot #resize {
+          position: absolute;
+          z-index: 5;
+          left: 45%;
+          top: -10px;
+          cursor: grab;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.6);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: background-color 0.3s; }
+          main.main-content .right .slots .slot #resize:hover {
+            background-color: #fff; }
+      main.main-content .right .slots .slot-content {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px dashed #cac4c4;
+        border-radius: 8px;
+        height: 100%;
+        min-height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        resize: both;
+        padding: 0 5px 5px 0;
+        overflow: auto;
+        -webkit-box-shadow: inset 10px 10px 70px -33px black;
+        -moz-box-shadow: inset 10px 10px 70px -33px black;
+        box-shadow: inset 10px 10px 70px -33px black; }
+    main.main-content .right > header {
+      position: relative;
+      z-index: 10; }
+    main.main-content .right > header h2,
+    main.main-content .right > header p {
+      padding-left: 30px;
+      color: #fff; }
 
 /*---------------------------------------------------------------------------------------------*/
 

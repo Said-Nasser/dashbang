@@ -1,96 +1,136 @@
-
-*, *::after, *::before {
+*,
+*::after,
+*::before {
     box-sizing: border-box;
 }
 body {
     overflow-x: hidden;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    overflow-y: auto;
+    background-image: linear-gradient(rgba(#000, 0.5), rgba(#000, 0.5)),
+        url(https://www.newsbtc.com/wp-content/uploads/2018/08/techanalysis-eth4.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-
-
-/*--------------------------------------------header ------------------------------------------*/
-
-header.top-header {
-    color: #fff;
-    background: #000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    a {
-        color: #fff;
-        text-decoration: none;
-    }
-    button {
-        display: flex;
-        align-items: center;
-        border: none;
-        background: transparent;
-        color: #fff;
-        img {
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        span {
-            margin-right: 10px;
-        }
-    }
-    .dropdown {
-        position: relative;
-        .dropdown-menu {
-            position: absolute;
-            top: 130%;
-            left: 0;
-            display: none;
-            z-index: 10;
-            border-radius: 5px;
-            box-shadow: 0 0 10px -5px #000;
-            padding: 5px;
-            width: 100%;
-            a {
-                color: #000;
-                display: block;
-            }
-            &.show {
-                display: block;
-            }
-        }
-    }
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
 }
 
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: #00171f;
+    border-radius: 10px;
+    transition: background-color 0.4s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #007ea7;
+}
 
 /*------------------------------------- main content ------------------------------------------*/
 main.main-content {
-    > header {
-        border-bottom: 1px solid rgb(221, 217, 217);
-        padding: 0 30px;
-        h2 {
+    height: 100%;
+    .top-header {
+        color: #fff;
+        background: rgba(#40bcd8, 0.4);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 30px;
+        a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        button {
             display: flex;
             align-items: center;
-            color: #6f6f6f;
+            border: none;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            img {
+                border-radius: 50%;
+                margin-right: 5px;
+                border: 2px solid #fff;
+            }
+            span {
+                margin-right: 10px;
+            }
         }
+        .dropdown {
+            position: relative;
+            .dropdown-menu {
+                position: absolute;
+                top: 130%;
+                left: 0;
+                display: none;
+                z-index: 10;
+                border-radius: 5px;
+                box-shadow: 0 0 10px -5px #000;
+                padding: 5px;
+                width: 100%;
+                a {
+                    color: #000;
+                    display: block;
+                }
+                &.show {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    h2 {
+        display: flex;
+        align-items: center;
+        color: #6f6f6f;
+        margin: 0;
+        padding: 1rem;
         i {
             margin-left: 10px;
         }
     }
-    .container {
+
+    > .container {
         display: flex;
+        height: 100%;
     }
     .left {
         flex: 0 0 20%;
-        background: #fff;
-        min-height: 590px;
+        background: rgba(#40bcd8, 0.5);
+        border-top: 1px solid #40bcd8;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
         padding: 15px;
+        position: relative;
+        z-index: 20;
         button {
             padding: 10px;
             background: #fff;
             font-size: 18px;
             border: 1px solid #cac4c4;
+            cursor: pointer;
+            background: rgba(139, 206, 228, 1);
+            border: none;
+            border-radius: 7px;
+            -webkit-box-shadow: 5px 8px 10px -7px #8bcee4;
+            -moz-box-shadow: 5px 8px 10px -7px #8bcee4;
+            box-shadow: 5px 8px 10px -7px #8bcee4;
         }
 
         .widget {
@@ -98,39 +138,72 @@ main.main-content {
             width: 100%;
             min-height: 140px;
             margin: 15px 0 0;
+            border-radius: 7px;
         }
         .chart {
             cursor: grab;
+            background: rgba(241, 245, 248, 0.4);
         }
     }
 
-
     .right {
         flex: 0 0 80%;
-        background: #ebebeb;
-        padding: 0 20px;
         min-height: 590px;
+        position: relative;
+        overflow-x: hidden;
+        z-index: 10;
         .slots {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
+            padding: 0 20px;
             .slot {
-                flex: 0 0 50%;
-                min-height: 200px;
+                position: absolute;
+                z-index: 3;
+                width: 90%;
+                height: 400px;
                 padding: 10px;
+                #resize {
+                    position: absolute;
+                    z-index: 5;
+                    left: 45%;
+                    top: -10px;
+                    cursor: grab;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background-color: rgba($color: rgb(255, 255, 255), $alpha: 0.6);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: background-color 0.3s;
+                    &:hover {
+                        background-color: #fff;
+                    }
+                }
             }
             .slot-content {
-                background: #fff;
+                background: rgba(#fff, 0.85);
                 border: 1px dashed #cac4c4;
+                border-radius: 8px;
                 height: 100%;
                 min-height: 200px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 resize: both;
+                padding: 0 5px 5px 0;
                 overflow: auto;
-
+                -webkit-box-shadow: inset 10px 10px 70px -33px rgba(0, 0, 0, 1);
+                -moz-box-shadow: inset 10px 10px 70px -33px rgba(0, 0, 0, 1);
+                box-shadow: inset 10px 10px 70px -33px rgba(0, 0, 0, 1);
             }
+        }
+        > header {
+            position: relative;
+            z-index: 10;
+        }
+        > header h2,
+        > header p {
+            padding-left: 30px;
+            color: #fff;
         }
     }
 }
